@@ -13,8 +13,8 @@ def get_current_time():
     # return current_time
 
     current_time = datetime.now().strftime('%H:%M')
-    #return current_time
-    return '00:30'
+    return current_time
+    #return '00:30'
 
 def find_closest_time(time_list):
     current_time = datetime.strptime(get_current_time(), '%H:%M')
@@ -42,7 +42,7 @@ def charge_time(push):
     
     match push:
         #i should also do lists for 4 car push and 5 car push, we do go that slow occasionally.
-        
+
         case 6:
             times = ['02:00', '06:00', '10:00', '14:00', '18:00', '22:00']
             rate = 24 / 6
@@ -77,13 +77,13 @@ def charge_time(push):
 def main():
     print(get_current_time())
 
-    times, rate = charge_time(6)
+    times, rate = charge_time(7)
     print(times)
     print(rate)
 
     # times = ['09:00', '11:25', '12:30', '15:45', '18:20', '21:00']
-    # closest_time = find_closest_time(times)
-    # print("Closest time:", closest_time)
+    closest_time = find_closest_time(times)
+    print("Closest time:", closest_time)
 
     return None
 
