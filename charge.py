@@ -32,8 +32,10 @@ def find_closest_time(time_list):
         # If the most recent time is from the previous day, we need to find the closest time from yesterday
         past_times = [time for time in time_list if time > current_time - timedelta(days=1)]
         most_recent = max(past_times)
+
+    last_charge = most_recent.strftime('%H:%M')
     
-    return most_recent.strftime('%H:%M')
+    return last_charge
 
 
 def charge_time(push):
@@ -72,19 +74,43 @@ def charge_time(push):
             rate = 24 / 14
     return times, rate
 
+def number_crunch(rate, last_charge, current_time):
+    current_time = datetime.strptime(current_time, '%H:%M')
+    last_charge = datetime.strptime(last_charge, '%H:%M')
+
+    time_diff = current_time - last_charge 
+    time_diff_minutes = time_diff.seconds // 60
+
+    inches_minute = 120 / (rate * 60)
+    current_position = time_diff_minutes * inches_minute
+    return current_position
 
 
 def main():
-    print(get_current_time())
+    push = 7
 
-    times, rate = charge_time(7)
-    print(times)
-    print(rate)
 
-    # times = ['09:00', '11:25', '12:30', '15:45', '18:20', '21:00']
-    closest_time = find_closest_time(times)
-    print("Closest time:", closest_time)
+    ## testing code     
+    # print(get_current_time())
+    
+    # times, rate = charge_time(push)
+    # print(times)
+    # print(rate)
 
+    # # times = ['09:00', '11:25', '12:30', '15:45', '18:20', '21:00']
+    # closest_time = find_closest_time(times)
+    # print("Closest time:", closest_time)
+
+    #END Testing Code
+
+
+    #### ------------------- ####
+    ## this starts actual main section
+
+    times, rate = charge_time(push)
+    distance = number_crunch(rate, find_closest_time(times), get_current_time())
+
+    print(distance)
     return None
 
 if __name__ == '__main__':
